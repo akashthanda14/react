@@ -1,0 +1,107 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Debug Cache</title>
+    <style>
+        body {
+            font-family: monospace;
+            padding: 20px;
+            background: #1a1a1a;
+            color: #00ff00;
+        }
+        button {
+            padding: 10px 20px;
+            margin: 10px;
+            cursor: pointer;
+            background: #333;
+            color: #00ff00;
+            border: 1px solid #00ff00;
+            border-radius: 4px;
+        }
+        button:hover {
+            background: #444;
+        }
+        pre {
+            background: #000;
+            padding: 10px;
+            border: 1px solid #00ff00;
+            border-radius: 4px;
+            overflow-x: auto;
+        }
+    </style>
+</head>
+<body>
+    <h1>📦 Cache & Storage Debug Tool</h1>
+    
+    <div>
+        <button onclick="showCache()">Show All Cache Data</button>
+        <button onclick="clearCache()">Clear All Cache</button>
+        <button onclick="testBookmarksAPI()">Test Bookmarks API</button>
+        <button onclick="testNotesAPI()">Test Notes API</button>
+    </div>
+    
+    <div id="output"></div>
+    
+    <script>
+        function showCache() {
+            const output = document.getElementById('output');
+            let html = '<h2>LocalStorage Contents:</h2>';
+            
+            const keys = ['dsasheet_bookmarks', 'dsasheet_notes', 'dsasheet_progress'];
+            
+            keys.forEach(key => {
+                const data = localStorage.getItem(key);
+                html += `<h3>${key}:</h3>`;
+                if (data) {
+                    try {
+                        const parsed = JSON.parse(data);
+                        html += `<pre>${JSON.stringify(parsed, null, 2)}</pre>`;
+                    } catch (e) {
+                        html += `<pre>${data}</pre>`;
+                    }
+                } else {
+                    html += `<p style="color: yellow">No data</p>`;
+                }
+            });
+            
+            output.innerHTML = html;
+        }
+        
+        function clearCache() {
+            localStorage.removeItem('dsasheet_bookmarks');
+            localStorage.removeItem('dsasheet_notes');
+            localStorage.removeItem('dsasheet_progress');
+            alert('Cache cleared! Refresh the page to reload from backend.');
+        }
+        
+        async function testBookmarksAPI() {
+            const output = document.getElementById('output');
+            output.innerHTML = '<h2>Testing Bookmarks API...</h2>';
+            
+            try {
+                const response = await fetch('http://localhost:3001/api/bookmarks');
+                const data = await response.json();
+                output.innerHTML += `<h3>Response:</h3><pre>${JSON.stringify(data, null, 2)}</pre>`;
+            } catch (error) {
+                output.innerHTML += `<p style="color: red">Error: ${error.message}</p>`;
+            }
+        }
+        
+        async function testNotesAPI() {
+            const output = document.getElementById('output');
+            output.innerHTML = '<h2>Testing Notes API...</h2>';
+            
+            try {
+                const response = await fetch('http://localhost:3001/api/notes');
+                const data = await response.json();
+                output.innerHTML += `<h3>Response:</h3><pre>${JSON.stringify(data, null, 2)}</pre>`;
+            } catch (error) {
+                output.innerHTML += `<p style="color: red">Error: ${error.message}</p>`;
+            }
+        }
+        
+        // Auto-load on page load
+        showCache();
+    </script>
+</body>
+</html>
