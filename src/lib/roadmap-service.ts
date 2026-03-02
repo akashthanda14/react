@@ -127,7 +127,6 @@ export async function createUserRoadmap(
             trackId: track.id,
             experienceLevel: onboardingAnswers.experienceLevel,
             timeCommitment: onboardingAnswers.weeklyHours,
-            currentPhaseOrder: assignment.startPhaseOrder,
         },
     });
 
@@ -138,7 +137,7 @@ export async function createUserRoadmap(
         data: allMilestones.map((milestone) => ({
             userRoadmapId: userRoadmap.id,
             milestoneId: milestone.id,
-            completed: false,
+            // completedAt = null means not yet completed
         })),
     });
 
@@ -200,9 +199,9 @@ export async function getUserRoadmap(
         throw new Error(`User roadmap not found for track: ${trackSlug}`);
     }
 
-    // Map milestone progress to milestones
+    // Map milestone progress — completed = completedAt is not null
     const milestoneProgressMap = new Map(
-        userRoadmap.milestoneProgress.map((mp) => [mp.milestoneId, mp.completed])
+        userRoadmap.milestoneProgress.map((mp) => [mp.milestoneId, mp.completedAt !== null])
     );
 
     // Transform data for response
@@ -227,8 +226,13 @@ export async function getUserRoadmap(
         })),
     }));
 
-    // Calculate estimated weeks (simplified - could be more sophisticated)
-    const remainingPhases = phases.length - userRoadmap.currentPhaseOrder + 1;
+    // currentPhaseOrder: first phase that has any incomplete milestone
+    const currentPhaseOrder = phases.findIndex((p) =>
+        p.milestones.some((m) => !m.completed)
+    ) + 1 || phases.length;
+
+    // Calculate estimated weeks
+    const remainingPhases = phases.length - currentPhaseOrder + 1;
     const hoursPerPhase = 15;
     const weeklyHours = getWeeklyHoursFromCommitment(userRoadmap.timeCommitment || '');
     const estimatedWeeks = Math.ceil((remainingPhases * hoursPerPhase) / weeklyHours);
@@ -241,7 +245,7 @@ export async function getUserRoadmap(
         trackSlug: userRoadmap.track.slug,
         experienceLevel: userRoadmap.experienceLevel || '',
         timeCommitment: userRoadmap.timeCommitment || '',
-        currentPhaseOrder: userRoadmap.currentPhaseOrder,
+        currentPhaseOrder,
         estimatedWeeks,
         paceDescription: getPaceDescription(userRoadmap.timeCommitment || ''),
         startedAt: userRoadmap.startedAt,
@@ -291,7 +295,7 @@ export async function updateMilestoneProgress(
             },
         },
         data: {
-            completed,
+            // completedAt = current timestamp if marking done, null if undoing
             completedAt: completed ? new Date() : null,
         },
     });
@@ -303,14 +307,12 @@ export async function updateMilestoneProgress(
  * @param userRoadmapId - User roadmap ID
  * @param phaseOrder - New phase order
  */
+// updateCurrentPhase kept for potential future use — currentPhaseOrder is now derived on-read
 export async function updateCurrentPhase(
-    userRoadmapId: string,
-    phaseOrder: number
+    _userRoadmapId: string,
+    _phaseOrder: number
 ): Promise<void> {
-    await prisma.userRoadmap.update({
-        where: { id: userRoadmapId },
-        data: { currentPhaseOrder: phaseOrder },
-    });
+    // no-op: currentPhaseOrder is computed from milestone completions
 }
 
 // ============================================
@@ -352,7 +354,7 @@ export async function getMilestoneStats(userRoadmapId: string) {
         where: { userRoadmapId },
     });
 
-    const completed = progress.filter(p => p.completed).length;
+    const completed = progress.filter(p => p.completedAt !== null).length;
     const total = progress.length;
     const percentage = total > 0 ? Math.round((completed / total) * 100) : 0;
 
@@ -382,7 +384,7 @@ export async function getRecentCompletions(userId: string, limit: number = 10) {
     const recentCompletions = await prisma.userMilestoneProgress.findMany({
         where: {
             userRoadmapId: { in: roadmapIds },
-            completed: true,
+            completedAt: { not: null },
         },
         include: {
             milestone: {
@@ -403,9 +405,9 @@ export async function getRecentCompletions(userId: string, limit: number = 10) {
 
     return recentCompletions.map(rc => ({
         milestoneId: rc.milestoneId,
-        milestoneTitle: rc.milestone.title,
-        phaseName: rc.milestone.phase.name,
-        trackName: rc.milestone.phase.track.name,
+        milestoneTitle: (rc as any).milestone?.title ?? '',
+        phaseName: (rc as any).milestone?.phase?.name ?? '',
+        trackName: (rc as any).milestone?.phase?.track?.name ?? '',
         completedAt: rc.completedAt,
     }));
 }
@@ -445,7 +447,7 @@ export async function getPhaseProgress(
     });
 
     const totalMilestones = milestoneIds.length;
-    const completedMilestones = progress.filter(p => p.completed).length;
+    const completedMilestones = progress.filter(p => p.completedAt !== null).length;
     const percentage = totalMilestones > 0
         ? Math.round((completedMilestones / totalMilestones) * 100)
         : 0;
@@ -498,7 +500,7 @@ export async function getTrackProgress(
     });
 
     const totalMilestones = allMilestoneIds.length;
-    const completedMilestones = progress.filter(p => p.completed).length;
+    const completedMilestones = progress.filter(p => p.completedAt !== null).length;
     const percentage = totalMilestones > 0
         ? Math.round((completedMilestones / totalMilestones) * 100)
         : 0;

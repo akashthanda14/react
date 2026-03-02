@@ -77,13 +77,28 @@ const ROLE_TO_TRACK_MAP: Record<TargetRole, { slug: string; name: string }> = {
  * - 3-5 years start at Phase 3 (intermediate)
  * - 5+ years start at Phase 4 (advanced topics)
  * 
- * Note: Phase order is 1-indexed in the database
+ * Note: Phase order is 1-indexed in the database.
+ * Different tracks have different phase counts, so the start phase depends on the track.
  */
-const EXPERIENCE_TO_START_PHASE: Record<ExperienceLevel, number> = {
+
+// Default start phases for tracks with 5 phases
+const DEFAULT_EXPERIENCE_TO_START_PHASE: Record<ExperienceLevel, number> = {
     "Just starting out": 1,
     "1-2 years of experience": 2,
     "3-5 years of experience": 3,
     "5+ years of experience": 4,
+};
+
+// Track-specific overrides (for tracks with non-standard phase counts)
+// All tracks currently have 6 standardized phases — no overrides needed
+const TRACK_EXPERIENCE_TO_START_PHASE: Partial<Record<string, Record<ExperienceLevel, number>>> = {};
+
+// Total phase count per track slug
+const TRACK_TOTAL_PHASES: Record<string, number> = {
+    backend: 6,
+    devops: 6,
+    "system-design": 6,
+    genai: 6,
 };
 
 // ============================================
@@ -141,12 +156,14 @@ export function assignRoadmap(answers: OnboardingAnswers): RoadmapAssignment {
     // Step 1: Map target role to track
     const track = ROLE_TO_TRACK_MAP[answers.targetRole];
 
-    // Step 2: Determine starting phase based on experience
-    const startPhaseOrder = EXPERIENCE_TO_START_PHASE[answers.experienceLevel];
+    // Step 2: Determine starting phase (track-aware)
+    const trackStartMap =
+        TRACK_EXPERIENCE_TO_START_PHASE[track.slug] ?? DEFAULT_EXPERIENCE_TO_START_PHASE;
+    const startPhaseOrder = trackStartMap[answers.experienceLevel];
 
     // Step 3: Calculate estimated completion time
     const paceInfo = WEEKLY_HOURS_TO_PACE[answers.weeklyHours];
-    const totalPhases = 5;
+    const totalPhases = TRACK_TOTAL_PHASES[track.slug] ?? 5;
     const remainingPhases = totalPhases - startPhaseOrder + 1;
     const hoursPerPhase = 15;
     const totalHours = remainingPhases * hoursPerPhase;

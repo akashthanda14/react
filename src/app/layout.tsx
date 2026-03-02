@@ -1,28 +1,40 @@
 import type { Metadata } from "next";
-import { Geist, Geist_Mono } from "next/font/google";
+import { Syne, DM_Sans, JetBrains_Mono } from "next/font/google";
 import "./globals.css";
 import ConditionalNavbar from "@/components/ConditionalNavbar";
 import ConditionalFooter from "@/components/ConditionalFooter";
 import ConditionalMain from "@/components/ConditionalMain";
 import { SessionProvider } from "@/components/SessionProvider";
 
-const geistSans = Geist({
-  variable: "--font-geist-sans",
+const syne = Syne({
+  variable: "--font-syne",
   subsets: ["latin"],
+  weight: ["600", "700", "800"],
+  display: "swap",
 });
 
-const geistMono = Geist_Mono({
-  variable: "--font-geist-mono",
+const dmSans = DM_Sans({
+  variable: "--font-dm-sans",
   subsets: ["latin"],
+  weight: ["400", "500", "600"],
+  display: "swap",
+});
+
+const jetbrainsMono = JetBrains_Mono({
+  variable: "--font-jetbrains-mono",
+  subsets: ["latin"],
+  weight: ["400", "500"],
+  display: "swap",
 });
 
 export const metadata: Metadata = {
-  title: "akashcodeofficial - Personalized Engineering Roadmaps",
-  description: "Get structured roadmaps, milestones, and validation for Backend, DevOps, System Design, Fullstack, and GenAI engineering",
+  title: "akashcodeofficial — Personalized Engineering Roadmaps",
+  description:
+    "Structured, phase-based learning tracks for junior engineers targeting senior roles in Full Stack, DevOps, System Design, and GenAI.",
   icons: {
     icon: [
-      { url: '/icon.svg', type: 'image/svg+xml' },
-      { url: '/icon.png', type: 'image/png' },
+      { url: "/icon.svg", type: "image/svg+xml" },
+      { url: "/icon.png", type: "image/png" },
     ],
   },
 };
@@ -36,7 +48,10 @@ export default function RootLayout({
     <html lang="en">
       <head>
         {/* Google Analytics */}
-        <script async src="https://www.googletagmanager.com/gtag/js?id=G-7G1RJWFCRH"></script>
+        <script
+          async
+          src="https://www.googletagmanager.com/gtag/js?id=G-7G1RJWFCRH"
+        />
         <script
           dangerouslySetInnerHTML={{
             __html: `
@@ -49,13 +64,13 @@ export default function RootLayout({
         />
       </head>
       <body
-        className={`${geistSans.variable} ${geistMono.variable} antialiased bg-background text-foreground`}
+        className={`${syne.variable} ${dmSans.variable} ${jetbrainsMono.variable} antialiased bg-background text-foreground font-body`}
       >
         <SessionProvider>
-            <ConditionalNavbar />
-            <ConditionalMain>{children}</ConditionalMain>
-            <ConditionalFooter />
-          </SessionProvider>
+          <ConditionalNavbar />
+          <ConditionalMain>{children}</ConditionalMain>
+          <ConditionalFooter />
+        </SessionProvider>
       </body>
     </html>
   );

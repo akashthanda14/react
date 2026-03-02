@@ -1,84 +1,163 @@
 import Link from "next/link";
-import { Check } from "lucide-react";
+import { CheckCircle2, X, ArrowRight, Zap } from "lucide-react";
+
+export const metadata = {
+    title: "Pricing — akashcodeofficial",
+    description: "Start free. Upgrade to Pro when you're ready for the full roadmap.",
+};
+
+const FREE_FEATURES = [
+    { text: "All 4 tracks visible", included: true },
+    { text: "Full phase structure & names", included: true },
+    { text: "Phase 1 completely unlocked", included: true },
+    { text: "Progress tracking (Phase 1)", included: true },
+    { text: "Phases 2–6 unlocked", included: false },
+    { text: "Full milestone details", included: false },
+    { text: "AI next-step nudges", included: false },
+    { text: "Completion certificates", included: false },
+    { text: "Community Discord access", included: false },
+];
+
+const PRO_FEATURES = [
+    { text: "Everything in Free", included: true },
+    { text: "All 6 phases fully unlocked", included: true },
+    { text: "All milestone details & skills", included: true },
+    { text: "AI next-step recommendations", included: true },
+    { text: "Completion certificates", included: true },
+    { text: "Community Discord access", included: true },
+    { text: "New tracks as released", included: true },
+    { text: "Priority support", included: true },
+];
+
+const FAQ = [
+    { q: "Can I cancel anytime?", a: "Yes. No lock-ins, no questions asked. You'll retain access until the end of your billing period." },
+    { q: "What's in Phase 1 for free?", a: "The entire first phase — all skills, all milestones, full detail. It's enough to evaluate whether the track fits your goals." },
+    { q: "Is there a student discount?", a: "Send a DM on Instagram @akashcodeofficial with your student ID and we'll sort you out." },
+    { q: "What if I want more than one track?", a: "Pro unlocks all 4 tracks simultaneously. Pick up a second track any time without paying more." },
+];
 
 export default function PricingPage() {
     return (
         <div className="min-h-screen bg-background">
-            <div className="container mx-auto px-4 py-12 max-w-6xl">
+            <div className="max-w-4xl mx-auto px-4 py-16">
+
+                {/* Header */}
                 <div className="text-center mb-16">
-                    <h1 className="text-4xl font-extrabold text-foreground mb-4">
-                        Simple, Transparent Pricing
+                    <div className="inline-flex items-center gap-2 px-4 py-1.5 rounded-full border border-neon/20 bg-neon/5 text-xs font-semibold text-neon mb-6">
+                        <Zap className="w-3.5 h-3.5" /> Simple pricing
+                    </div>
+                    <h1 className="font-display text-4xl sm:text-5xl font-bold text-foreground mb-4">
+                        Start free.{" "}
+                        <span className="text-neon">Upgrade when ready.</span>
                     </h1>
-                    <p className="text-lg text-muted-foreground max-w-2xl mx-auto">
-                        Start free. Upgrade when you're ready.
+                    <p className="text-muted-foreground max-w-md mx-auto text-sm">
+                        No credit card required to start. Phase 1 of every track is free, forever.
                     </p>
                 </div>
 
-                <div className="grid md:grid-cols-2 gap-8 max-w-4xl mx-auto">
-                    {/* Free Tier */}
-                    <div className="p-8 bg-card border border-border rounded-2xl">
-                        <h3 className="text-2xl font-bold text-foreground mb-2">Free</h3>
-                        <div className="text-4xl font-extrabold text-foreground mb-6">
-                            $0<span className="text-lg font-normal text-muted-foreground">/month</span>
+                {/* Pricing Cards */}
+                <div className="grid grid-cols-1 sm:grid-cols-2 gap-6 mb-16">
+
+                    {/* Free */}
+                    <div className="p-8 rounded-xl border border-border bg-surface">
+                        <div className="mb-6">
+                            <h2 className="font-display text-xl font-bold text-foreground mb-1">Free</h2>
+                            <p className="text-sm text-muted-foreground">Start learning immediately</p>
                         </div>
-                        <ul className="space-y-3 mb-8">
-                            <li className="flex items-start gap-2">
-                                <Check className="w-5 h-5 text-neon flex-shrink-0 mt-0.5" />
-                                <span className="text-muted-foreground">3 modules unlocked</span>
-                            </li>
-                            <li className="flex items-start gap-2">
-                                <Check className="w-5 h-5 text-neon flex-shrink-0 mt-0.5" />
-                                <span className="text-muted-foreground">Basic playground access</span>
-                            </li>
-                            <li className="flex items-start gap-2">
-                                <Check className="w-5 h-5 text-neon flex-shrink-0 mt-0.5" />
-                                <span className="text-muted-foreground">2 case studies</span>
-                            </li>
-                        </ul>
+                        <div className="mb-8">
+                            <span className="font-display text-5xl font-bold text-foreground">$0</span>
+                            <span className="text-muted-foreground text-sm">/month</span>
+                        </div>
+                        <div className="space-y-3 mb-8">
+                            {FREE_FEATURES.map((f) => (
+                                <div key={f.text} className="flex items-start gap-3">
+                                    {f.included
+                                        ? <CheckCircle2 className="w-4 h-4 text-muted-foreground/60 mt-0.5 flex-shrink-0" />
+                                        : <X className="w-4 h-4 text-disabled mt-0.5 flex-shrink-0" />}
+                                    <span className={`text-sm ${f.included ? "text-foreground" : "text-disabled"}`}>
+                                        {f.text}
+                                    </span>
+                                </div>
+                            ))}
+                        </div>
                         <Link
                             href="/onboarding"
-                            className="block w-full px-6 py-3 bg-card border border-border text-foreground font-semibold rounded-lg hover:bg-card/80 transition-all text-center"
+                            className="block w-full text-center py-3 btn-ghost text-sm font-semibold rounded-lg"
                         >
-                            Get Started
+                            Start for Free
                         </Link>
                     </div>
 
-                    {/* Pro Tier */}
-                    <div className="p-8 bg-gradient-to-br from-blue-900/20 to-blue-600/10 border border-neon rounded-2xl relative">
-                        <div className="absolute -top-3 right-8 px-3 py-1 bg-neon text-background text-sm font-semibold rounded-full">
-                            Popular
+                    {/* Pro */}
+                    <div className="relative p-8 rounded-xl border border-neon/30 bg-surface overflow-hidden shadow-neon-sm">
+                        {/* Glow */}
+                        <div className="absolute inset-0 bg-gradient-to-br from-neon/5 via-transparent to-transparent pointer-events-none" />
+
+                        <div className="relative">
+                            <div className="flex items-center justify-between mb-1">
+                                <h2 className="font-display text-xl font-bold text-foreground">Pro</h2>
+                                <span className="px-2.5 py-1 bg-neon/15 text-neon text-[10px] font-bold uppercase tracking-widest rounded-full">
+                                    Most Popular
+                                </span>
+                            </div>
+                            <p className="text-sm text-muted-foreground mb-6">Full access to everything</p>
+                            <div className="mb-8">
+                                <span className="font-display text-5xl font-bold text-foreground">$9</span>
+                                <span className="text-muted-foreground text-sm">/month</span>
+                            </div>
+                            <div className="space-y-3 mb-8">
+                                {PRO_FEATURES.map((f) => (
+                                    <div key={f.text} className="flex items-start gap-3">
+                                        <CheckCircle2 className="w-4 h-4 text-neon mt-0.5 flex-shrink-0" />
+                                        <span className="text-sm text-foreground">{f.text}</span>
+                                    </div>
+                                ))}
+                            </div>
+                            <Link
+                                href="/onboarding"
+                                id="pricing-pro-cta"
+                                className="flex items-center justify-center gap-2 w-full py-3 btn-neon text-sm font-semibold rounded-lg animate-neon-pulse"
+                            >
+                                Start Pro <ArrowRight className="w-4 h-4" />
+                            </Link>
+                            <p className="text-center text-xs text-muted-foreground mt-3">
+                                Cancel anytime · No lock-in
+                            </p>
                         </div>
-                        <h3 className="text-2xl font-bold text-foreground mb-2">Pro</h3>
-                        <div className="text-4xl font-extrabold text-foreground mb-6">
-                            $29<span className="text-lg font-normal text-muted-foreground">/month</span>
-                        </div>
-                        <ul className="space-y-3 mb-8">
-                            <li className="flex items-start gap-2">
-                                <Check className="w-5 h-5 text-neon flex-shrink-0 mt-0.5" />
-                                <span className="text-muted-foreground">All 8 modules unlocked</span>
-                            </li>
-                            <li className="flex items-start gap-2">
-                                <Check className="w-5 h-5 text-neon flex-shrink-0 mt-0.5" />
-                                <span className="text-muted-foreground">Unlimited playground access</span>
-                            </li>
-                            <li className="flex items-start gap-2">
-                                <Check className="w-5 h-5 text-neon flex-shrink-0 mt-0.5" />
-                                <span className="text-muted-foreground">All case studies</span>
-                            </li>
-                            <li className="flex items-start gap-2">
-                                <Check className="w-5 h-5 text-neon flex-shrink-0 mt-0.5" />
-                                <span className="text-muted-foreground">Interview mode with AI feedback</span>
-                            </li>
-                            <li className="flex items-start gap-2">
-                                <Check className="w-5 h-5 text-neon flex-shrink-0 mt-0.5" />
-                                <span className="text-muted-foreground">Priority support</span>
-                            </li>
-                        </ul>
-                        <button className="w-full px-6 py-3 bg-neon text-background font-semibold rounded-lg hover:bg-neon/90 transition-all">
-                            Upgrade to Pro
-                        </button>
                     </div>
                 </div>
+
+                {/* FAQ */}
+                <div className="max-w-2xl mx-auto">
+                    <h2 className="font-display text-2xl font-bold text-foreground text-center mb-8">
+                        Common questions
+                    </h2>
+                    <div className="space-y-4">
+                        {FAQ.map((item) => (
+                            <div key={item.q} className="p-5 rounded-xl border border-border bg-surface">
+                                <h3 className="font-semibold text-foreground text-sm mb-2">{item.q}</h3>
+                                <p className="text-sm text-muted-foreground leading-relaxed">{item.a}</p>
+                            </div>
+                        ))}
+                    </div>
+                </div>
+
+                {/* Bottom CTA */}
+                <div className="text-center mt-16 p-8 rounded-xl border border-border bg-surface">
+                    <p className="font-display font-bold text-xl text-foreground mb-2">
+                        Still on the fence?
+                    </p>
+                    <p className="text-sm text-muted-foreground mb-6">
+                        Start with the free Phase 1 of any track. If it&apos;s not the best structured roadmap you&apos;ve seen, don&apos;t upgrade.
+                    </p>
+                    <Link
+                        href="/onboarding"
+                        className="inline-flex items-center gap-2 px-6 py-3 btn-neon text-sm font-semibold"
+                    >
+                        Start Free <ArrowRight className="w-4 h-4" />
+                    </Link>
+                </div>
+
             </div>
         </div>
     );

@@ -139,7 +139,7 @@ export async function GET(request: NextRequest) {
         const progress = await prisma.userMilestoneProgress.findMany({
             where: {
                 userRoadmapId,
-                completed: true,
+                completedAt: { not: null },
             },
             include: {
                 milestone: {

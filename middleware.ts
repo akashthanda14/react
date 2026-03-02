@@ -32,9 +32,9 @@ export async function middleware(request: NextRequest) {
     return NextResponse.redirect(url);
   }
 
-  // Redirect to sheet if accessing auth routes while already authenticated
+  // Redirect to roadmap if accessing auth routes while already authenticated
   if (isAuthRoute && token) {
-    return NextResponse.redirect(new URL("/sheet", request.url));
+    return NextResponse.redirect(new URL("/roadmap", request.url));
   }
 
   return NextResponse.next();

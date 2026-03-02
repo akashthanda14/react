@@ -7,14 +7,14 @@ import { useSession, signOut } from "next-auth/react";
 import { cn } from "@/lib/utils";
 
 const navigation = [
-  {
-    name: "Tracks",
-    href: "/learn"
-  },
-  {
-    name: "Pricing",
-    href: "/pricing"
-  },
+  { name: "Tracks", href: "/learn" },
+  { name: "Pricing", href: "/pricing" },
+];
+
+const authNavigation = [
+  { name: "Dashboard", href: "/dashboard" },
+  { name: "Roadmap", href: "/roadmap" },
+  { name: "Pricing", href: "/pricing" },
 ];
 
 // ... imports
@@ -28,10 +28,7 @@ export default function Navbar({ }: NavbarProps) {
   const [showUserMenu, setShowUserMenu] = useState(false);
   const [isScrolled, setIsScrolled] = useState(false);
 
-  // Check if we're on auth pages
-  const isOnLoginPage = pathname?.startsWith("/auth/login");
-  const isOnRegisterPage = pathname?.startsWith("/auth/register");
-  const isOnAuthPage = isOnLoginPage || isOnRegisterPage;
+  const isOnLoginPage = pathname?.startsWith("/auth/login") ?? false;
 
   // Handle scroll for navbar shrink effect
   useEffect(() => {
@@ -80,25 +77,25 @@ export default function Navbar({ }: NavbarProps) {
               href="/"
               className="flex flex-shrink-0 items-center focus:outline-none focus:ring-2 focus:ring-neon rounded-md transition-transform hover:scale-[1.02]"
             >
-              <span className="text-lg font-bold">
+              <span className="text-lg font-bold font-display">
                 <span className="text-neon">akashcodeofficial</span>
               </span>
             </Link>
 
-            <div className="hidden sm:flex sm:items-center sm:gap-8">
-              {navigation.map((item) => {
+            <div className="hidden sm:flex sm:items-center sm:gap-6">
+              {(session ? authNavigation : navigation).map((item) => {
                 const isActive = pathname === item.href;
                 return (
                   <Link
                     key={item.name}
                     href={item.href}
                     className={cn(
-                      "inline-flex items-center px-4 py-2 text-[15px] font-medium rounded-[24px]",
+                      "inline-flex items-center px-3 py-1.5 text-[14px] font-medium rounded-full",
                       "transition-all duration-200 ease-out",
                       "focus:outline-none focus:ring-2 focus:ring-neon/50",
                       isActive
-                        ? "bg-neon/10 text-neon font-semibold shadow-[0_0_12px_rgba(34,197,94,0.15)]"
-                        : "text-foreground/60 hover:bg-foreground/5 hover:text-foreground/90 hover:scale-[1.02]"
+                        ? "bg-neon/10 text-neon font-semibold"
+                        : "text-foreground/60 hover:bg-foreground/5 hover:text-foreground/90"
                     )}
                     aria-current={isActive ? "page" : undefined}
                   >
@@ -159,12 +156,28 @@ export default function Navbar({ }: NavbarProps) {
                         </p>
                       </div>
                       <Link
-                        href="/learn"
+                        href="/dashboard"
                         className="block px-4 py-2.5 text-sm font-medium text-foreground/80 hover:bg-foreground/5 hover:text-foreground transition-colors rounded-lg mx-2 mt-1"
                         role="menuitem"
                         onClick={() => setShowUserMenu(false)}
                       >
+                        Dashboard
+                      </Link>
+                      <Link
+                        href="/roadmap"
+                        className="block px-4 py-2.5 text-sm font-medium text-foreground/80 hover:bg-foreground/5 hover:text-foreground transition-colors rounded-lg mx-2"
+                        role="menuitem"
+                        onClick={() => setShowUserMenu(false)}
+                      >
                         My Roadmap
+                      </Link>
+                      <Link
+                        href="/profile"
+                        className="block px-4 py-2.5 text-sm font-medium text-foreground/80 hover:bg-foreground/5 hover:text-foreground transition-colors rounded-lg mx-2"
+                        role="menuitem"
+                        onClick={() => setShowUserMenu(false)}
+                      >
+                        Profile
                       </Link>
                       <button
                         onClick={handleSignOut}
