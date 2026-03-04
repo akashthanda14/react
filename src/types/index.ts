@@ -7,3 +7,8 @@ export interface User {
   email: string;
   image?: string;
 }
+
+/**
+ * Problem difficulty levels
+ */
+export type Difficulty = "Easy" | "Medium" | "Hard";

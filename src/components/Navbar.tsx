@@ -17,11 +17,7 @@ const authNavigation = [
   { name: "Pricing", href: "/pricing" },
 ];
 
-// ... imports
-
-interface NavbarProps { }
-
-export default function Navbar({ }: NavbarProps) {
+export default function Navbar() {
   const pathname = usePathname();
   const { data: session, status } = useSession();
   const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false);
@@ -29,30 +25,23 @@ export default function Navbar({ }: NavbarProps) {
   const [isScrolled, setIsScrolled] = useState(false);
 
   const isOnLoginPage = pathname?.startsWith("/auth/login") ?? false;
+  const activeNav = session ? authNavigation : navigation;
 
-  // Handle scroll for navbar shrink effect
   useEffect(() => {
-    const handleScroll = () => {
-      setIsScrolled(window.scrollY > 20);
-    };
-    window.addEventListener("scroll", handleScroll);
+    const handleScroll = () => setIsScrolled(window.scrollY > 20);
+    window.addEventListener("scroll", handleScroll, { passive: true });
     return () => window.removeEventListener("scroll", handleScroll);
   }, []);
 
-  // Close mobile menu on route change
   useEffect(() => {
     setIsMobileMenuOpen(false);
+    setShowUserMenu(false);
   }, [pathname]);
 
-  // Prevent body scroll when mobile menu is open
   useEffect(() => {
-    if (isMobileMenuOpen) {
-      document.body.style.overflow = "hidden";
-    } else {
-      document.body.style.overflow = "unset";
-    }
+    document.body.style.overflow = isMobileMenuOpen ? "hidden" : "";
     return () => {
-      document.body.style.overflow = "unset";
+      document.body.style.overflow = "";
     };
   }, [isMobileMenuOpen]);
 
@@ -61,7 +50,7 @@ export default function Navbar({ }: NavbarProps) {
   };
 
   return (
-    <div className="fixed top-0 left-0 right-0 z-50 px-6 pt-4">
+    <div className="fixed top-0 left-0 right-0 z-50 px-4 sm:px-6 pt-4">
       <nav
         className={cn(
           "mx-auto max-w-[1200px] rounded-[100px] border border-border bg-card/95 backdrop-blur-xl transition-all duration-300 ease-out",
@@ -70,29 +59,29 @@ export default function Navbar({ }: NavbarProps) {
         )}
         aria-label="Main navigation"
       >
-        <div className="flex h-full items-center justify-between px-6">
-          {/* Logo and Desktop Navigation */}
-          <div className="flex items-center gap-8">
+        <div className="flex h-full items-center justify-between px-5 sm:px-6">
+          {/* Logo + Desktop Nav */}
+          <div className="flex items-center gap-6 sm:gap-8">
             <Link
               href="/"
-              className="flex flex-shrink-0 items-center focus:outline-none focus:ring-2 focus:ring-neon rounded-md transition-transform hover:scale-[1.02]"
+              className="flex flex-shrink-0 items-center gap-2 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-neon/50 rounded-md transition-transform hover:scale-[1.02]"
             >
-              <span className="text-lg font-bold font-display">
+              <span className="font-display text-base font-bold">
                 <span className="text-neon">akashcodeofficial</span>
               </span>
             </Link>
 
-            <div className="hidden sm:flex sm:items-center sm:gap-6">
-              {(session ? authNavigation : navigation).map((item) => {
+            <div className="hidden sm:flex sm:items-center sm:gap-1">
+              {activeNav.map((item) => {
                 const isActive = pathname === item.href;
                 return (
                   <Link
                     key={item.name}
                     href={item.href}
                     className={cn(
-                      "inline-flex items-center px-3 py-1.5 text-[14px] font-medium rounded-full",
+                      "inline-flex items-center px-3 py-1.5 text-sm font-medium rounded-full",
                       "transition-all duration-200 ease-out",
-                      "focus:outline-none focus:ring-2 focus:ring-neon/50",
+                      "focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-neon/50",
                       isActive
                         ? "bg-neon/10 text-neon font-semibold"
                         : "text-foreground/60 hover:bg-foreground/5 hover:text-foreground/90"
@@ -103,8 +92,10 @@ export default function Navbar({ }: NavbarProps) {
                   </Link>
                 );
               })}
-            </div>          </div>
-          {/* Desktop User Menu / Sign In Button */}
+            </div>
+          </div>
+
+          {/* Desktop: User menu / Auth buttons */}
           <div className="hidden sm:flex sm:items-center sm:gap-3">
             {status === "loading" ? (
               <div className="h-9 w-9 animate-pulse rounded-full bg-foreground/10" />
@@ -114,23 +105,25 @@ export default function Navbar({ }: NavbarProps) {
                   onClick={() => setShowUserMenu(!showUserMenu)}
                   className={cn(
                     "flex items-center rounded-full transition-all duration-150",
-                    "focus:outline-none focus:ring-2 focus:ring-neon/30",
+                    "focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-neon/30",
                     showUserMenu && "ring-2 ring-neon/20"
                   )}
                   id="user-menu-button"
                   aria-expanded={showUserMenu}
                   aria-haspopup="true"
+                  aria-label="Open user menu"
                 >
-                  <span className="sr-only">Open user menu</span>
                   {session.user?.image ? (
                     <img
                       className="h-9 w-9 rounded-full border-2 border-border/30"
                       src={session.user.image}
-                      alt={session.user.name || "User"}
+                      alt={session.user.name || "User avatar"}
                     />
                   ) : (
-                    <div className="h-9 w-9 rounded-full border-2 border-border/30 bg-foreground/10 flex items-center justify-center text-foreground font-medium text-sm">
-                      {session.user?.name?.[0]?.toUpperCase() || session.user?.email?.[0]?.toUpperCase() || "U"}
+                    <div className="h-9 w-9 rounded-full border-2 border-border/30 bg-foreground/10 flex items-center justify-center text-foreground font-semibold text-sm">
+                      {session.user?.name?.[0]?.toUpperCase() ||
+                        session.user?.email?.[0]?.toUpperCase() ||
+                        "U"}
                     </div>
                   )}
                 </button>
@@ -140,9 +133,10 @@ export default function Navbar({ }: NavbarProps) {
                     <div
                       className="fixed inset-0 z-10"
                       onClick={() => setShowUserMenu(false)}
+                      aria-hidden="true"
                     />
                     <div
-                      className="absolute right-0 z-20 mt-3 w-56 origin-top-right rounded-2xl bg-card/95 backdrop-blur-xl border border-border py-2 shadow-[0_8px_32px_rgba(0,0,0,0.24),0_0_0_1px_rgba(255,255,255,0.05)] ring-1 ring-border/30 focus:outline-none"
+                      className="absolute right-0 z-20 mt-3 w-56 origin-top-right rounded-2xl bg-card/95 backdrop-blur-xl border border-border py-2 shadow-[0_8px_32px_rgba(0,0,0,0.24),0_0_0_1px_rgba(255,255,255,0.05)]"
                       role="menu"
                       aria-orientation="vertical"
                       aria-labelledby="user-menu-button"
@@ -155,33 +149,24 @@ export default function Navbar({ }: NavbarProps) {
                           {session.user?.email}
                         </p>
                       </div>
-                      <Link
-                        href="/dashboard"
-                        className="block px-4 py-2.5 text-sm font-medium text-foreground/80 hover:bg-foreground/5 hover:text-foreground transition-colors rounded-lg mx-2 mt-1"
-                        role="menuitem"
-                        onClick={() => setShowUserMenu(false)}
-                      >
-                        Dashboard
-                      </Link>
-                      <Link
-                        href="/roadmap"
-                        className="block px-4 py-2.5 text-sm font-medium text-foreground/80 hover:bg-foreground/5 hover:text-foreground transition-colors rounded-lg mx-2"
-                        role="menuitem"
-                        onClick={() => setShowUserMenu(false)}
-                      >
-                        My Roadmap
-                      </Link>
-                      <Link
-                        href="/profile"
-                        className="block px-4 py-2.5 text-sm font-medium text-foreground/80 hover:bg-foreground/5 hover:text-foreground transition-colors rounded-lg mx-2"
-                        role="menuitem"
-                        onClick={() => setShowUserMenu(false)}
-                      >
-                        Profile
-                      </Link>
+                      {[
+                        { label: "Dashboard", href: "/dashboard" },
+                        { label: "My Roadmap", href: "/roadmap" },
+                        { label: "Profile", href: "/profile" },
+                      ].map((item) => (
+                        <Link
+                          key={item.href}
+                          href={item.href}
+                          className="block px-4 py-2.5 text-sm font-medium text-foreground/80 hover:bg-foreground/5 hover:text-foreground transition-colors rounded-lg mx-2 mt-1"
+                          role="menuitem"
+                          onClick={() => setShowUserMenu(false)}
+                        >
+                          {item.label}
+                        </Link>
+                      ))}
                       <button
                         onClick={handleSignOut}
-                        className="block w-full text-left px-4 py-2.5 text-sm font-medium text-foreground/80 hover:bg-foreground/5 hover:text-foreground transition-colors rounded-lg mx-2"
+                        className="block w-full text-left px-4 py-2.5 text-sm font-medium text-foreground/80 hover:bg-foreground/5 hover:text-foreground transition-colors rounded-lg mx-2 mt-1"
                         role="menuitem"
                       >
                         Sign out
@@ -194,20 +179,13 @@ export default function Navbar({ }: NavbarProps) {
               <>
                 <Link
                   href="/auth/login"
-                  className="px-4 py-2 text-sm font-medium text-foreground hover:text-neon transition-colors"
+                  className="px-4 py-2 text-sm font-medium text-foreground/70 hover:text-neon transition-colors rounded-full hover:bg-neon/5"
                 >
                   Sign In
                 </Link>
                 <Link
                   href="/onboarding"
-                  className={cn(
-                    "px-5 py-2.5 text-sm font-semibold text-background rounded-lg",
-                    "bg-neon",
-                    "shadow-lg",
-                    "transition-all duration-200",
-                    "hover:bg-neon/90 hover:shadow-xl",
-                    "focus:outline-none focus:ring-2 focus:ring-neon/50"
-                  )}
+                  className="px-5 py-2.5 text-sm font-semibold text-background rounded-lg bg-neon shadow-neon-sm transition-all duration-200 hover:bg-neon/90 hover:shadow-neon-md focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-neon/50"
                 >
                   Get Started
                 </Link>
@@ -215,22 +193,18 @@ export default function Navbar({ }: NavbarProps) {
             )}
           </div>
 
-          {/* Mobile menu button */}
-          <div className="flex items-center gap-3 sm:hidden">
-
+          {/* Mobile: Hamburger */}
+          <div className="flex items-center sm:hidden">
             <button
               onClick={() => setIsMobileMenuOpen(!isMobileMenuOpen)}
-              className="inline-flex items-center justify-center rounded-full p-2.5 text-foreground/60 hover:bg-foreground/5 hover:text-foreground focus:outline-none focus:ring-2 focus:ring-neon/50 transition-all duration-150"
+              className="inline-flex items-center justify-center rounded-full p-2.5 text-foreground/60 hover:bg-foreground/5 hover:text-foreground focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-neon/50 transition-all duration-150"
               aria-expanded={isMobileMenuOpen}
               aria-controls="mobile-menu"
               aria-label={isMobileMenuOpen ? "Close menu" : "Open menu"}
             >
-              <span className="sr-only">
-                {isMobileMenuOpen ? "Close main menu" : "Open main menu"}
-              </span>
               {!isMobileMenuOpen ? (
                 <svg
-                  className="block h-6 w-6"
+                  className="h-5 w-5"
                   fill="none"
                   viewBox="0 0 24 24"
                   strokeWidth="1.5"
@@ -245,18 +219,14 @@ export default function Navbar({ }: NavbarProps) {
                 </svg>
               ) : (
                 <svg
-                  className="block h-6 w-6"
+                  className="h-5 w-5"
                   fill="none"
                   viewBox="0 0 24 24"
                   strokeWidth="1.5"
                   stroke="currentColor"
                   aria-hidden="true"
                 >
-                  <path
-                    strokeLinecap="round"
-                    strokeLinejoin="round"
-                    d="M6 18L18 6M6 6l12 12"
-                  />
+                  <path strokeLinecap="round" strokeLinejoin="round" d="M6 18L18 6M6 6l12 12" />
                 </svg>
               )}
             </button>
@@ -264,35 +234,35 @@ export default function Navbar({ }: NavbarProps) {
         </div>
       </nav>
 
-      {/* Mobile menu - Floating panel */}
+      {/* Mobile menu */}
       {isMobileMenuOpen && (
         <>
-          {/* Backdrop */}
           <div
             className="fixed inset-0 bg-black/20 backdrop-blur-sm z-40 sm:hidden"
             onClick={() => setIsMobileMenuOpen(false)}
+            aria-hidden="true"
           />
 
-          {/* Menu Panel */}
           <div
-            className="fixed left-6 right-6 top-[84px] z-50 max-h-[80vh] overflow-y-auto rounded-3xl bg-card/95 backdrop-blur-xl border border-border shadow-[0_16px_48px_rgba(0,0,0,0.32),0_0_0_1px_rgba(255,255,255,0.05)] sm:hidden animate-in slide-in-from-top-2 fade-in duration-200"
+            className="fixed left-4 right-4 top-[88px] z-50 max-h-[80vh] overflow-y-auto rounded-3xl bg-card/95 backdrop-blur-xl border border-border shadow-[0_16px_48px_rgba(0,0,0,0.32),0_0_0_1px_rgba(255,255,255,0.05)] sm:hidden animate-in slide-in-from-top fade-in duration-200"
             id="mobile-menu"
             role="dialog"
             aria-modal="true"
+            aria-label="Navigation menu"
           >
-            {/* Mobile menu content */}
+            {/* Nav links — uses correct set based on auth state */}
             <div className="py-3">
-              {navigation.map((item) => {
+              {activeNav.map((item) => {
                 const isActive = pathname === item.href;
                 return (
                   <Link
                     key={item.name}
                     href={item.href}
                     className={cn(
-                      "block mx-3 px-4 py-3 rounded-2xl text-[15px] font-medium transition-all duration-150",
-                      "focus:outline-none focus:ring-2 focus:ring-neon/50",
+                      "block mx-3 px-4 py-3.5 rounded-2xl text-[15px] font-medium transition-all duration-150",
+                      "focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-neon/50",
                       isActive
-                        ? "bg-neon/10 text-neon font-semibold shadow-[0_0_12px_rgba(34,197,94,0.12)]"
+                        ? "bg-neon/10 text-neon font-semibold"
                         : "text-foreground/70 hover:bg-foreground/5 hover:text-foreground active:scale-[0.98]"
                     )}
                     aria-current={isActive ? "page" : undefined}
@@ -304,19 +274,21 @@ export default function Navbar({ }: NavbarProps) {
               })}
             </div>
 
-            <div className="border-t border-border/50 py-4">
+            <div className="border-t border-border/50 py-4 px-3">
               {session ? (
-                <div className="px-3">
+                <div>
                   <div className="flex items-center px-4 py-3 mb-2 rounded-2xl bg-foreground/5">
                     {session.user?.image ? (
                       <img
-                        className="h-11 w-11 rounded-full border-2 border-border/30"
+                        className="h-11 w-11 rounded-full border-2 border-border/30 flex-shrink-0"
                         src={session.user.image}
-                        alt={session.user.name || "User"}
+                        alt={session.user.name || "User avatar"}
                       />
                     ) : (
-                      <div className="h-11 w-11 rounded-full border-2 border-border/30 bg-foreground/10 flex items-center justify-center text-foreground font-medium text-base">
-                        {session.user?.name?.[0]?.toUpperCase() || session.user?.email?.[0]?.toUpperCase() || "U"}
+                      <div className="h-11 w-11 rounded-full border-2 border-border/30 bg-foreground/10 flex items-center justify-center text-foreground font-semibold text-base flex-shrink-0">
+                        {session.user?.name?.[0]?.toUpperCase() ||
+                          session.user?.email?.[0]?.toUpperCase() ||
+                          "U"}
                       </div>
                     )}
                     <div className="ml-3 min-w-0 flex-1">
@@ -336,20 +308,21 @@ export default function Navbar({ }: NavbarProps) {
                   </button>
                 </div>
               ) : (
-                <div className="px-3">
-                  <button
-                    onClick={() => (window.location.href = isOnLoginPage ? "/auth/register" : "/auth/login")}
-                    className={cn(
-                      "w-full px-5 py-3 text-[15px] font-semibold text-black rounded-[24px]",
-                      "bg-gradient-to-r from-neon/90 to-neon",
-                      "shadow-[0_4px_16px_rgba(34,197,94,0.25)]",
-                      "transition-all duration-200 ease-out",
-                      "active:scale-[0.98]",
-                      "focus:outline-none focus:ring-2 focus:ring-neon/50"
-                    )}
+                <div className="space-y-2">
+                  <Link
+                    href={isOnLoginPage ? "/auth/register" : "/auth/login"}
+                    onClick={() => setIsMobileMenuOpen(false)}
+                    className="block w-full px-5 py-3.5 text-[15px] font-semibold text-foreground/70 border border-border rounded-2xl text-center hover:text-foreground hover:border-neon/30 transition-all active:scale-[0.98]"
                   >
                     {isOnLoginPage ? "Sign Up" : "Sign In"}
-                  </button>
+                  </Link>
+                  <Link
+                    href="/onboarding"
+                    onClick={() => setIsMobileMenuOpen(false)}
+                    className="block w-full px-5 py-3.5 text-[15px] font-semibold text-background bg-neon rounded-2xl text-center hover:bg-neon/90 shadow-neon-sm transition-all active:scale-[0.98] focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-neon/50"
+                  >
+                    Get Started
+                  </Link>
                 </div>
               )}
             </div>

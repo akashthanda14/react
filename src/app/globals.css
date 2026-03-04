@@ -312,6 +312,47 @@
     font-family: var(--font-mono);
   }
 
+  /* Background opacity variants */
+  .bg-background\/80 {
+    background-color: rgb(var(--color-background) / 0.80);
+  }
+
+  .bg-background\/90 {
+    background-color: rgb(var(--color-background) / 0.90);
+  }
+
+  .bg-background\/95 {
+    background-color: rgb(var(--color-background) / 0.95);
+  }
+
+  /* Text foreground variants */
+  .text-foreground\/80 {
+    color: rgb(var(--color-foreground) / 0.80);
+  }
+
+  .text-foreground\/90 {
+    color: rgb(var(--color-foreground) / 0.90);
+  }
+
+  /* Neon background 8% */
+  .bg-neon\/8 {
+    background-color: rgb(var(--color-neon) / 0.08);
+  }
+
+  /* Danger */
+  .bg-danger\/10 {
+    background-color: rgb(var(--color-danger) / 0.10);
+  }
+
+  .border-danger\/30 {
+    border-color: rgb(var(--color-danger) / 0.30);
+  }
+
+  /* Surface raised hover */
+  .hover\:bg-background\/95:hover {
+    background-color: rgb(var(--color-background) / 0.95);
+  }
+
   /* Hover states */
   .hover\:bg-card:hover {
     background-color: rgb(var(--color-surface));

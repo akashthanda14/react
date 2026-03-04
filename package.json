@@ -20,7 +20,6 @@
     "db:migrate:deploy": "prisma migrate deploy",
     "db:seed": "tsx prisma/seed.ts",
     "db:seed:lastminute": "tsx prisma/seed-lastminute.ts",
-    "db:seed:roadmap": "tsx prisma/seed-roadmap.ts",
     "db:studio": "prisma studio",
     "db:push": "prisma db push",
     "db:reset": "prisma migrate reset",

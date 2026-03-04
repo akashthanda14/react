@@ -4,6 +4,8 @@ import { Plus, Edit, ArrowLeft, HelpCircle } from "lucide-react";
 
 const prisma = new PrismaClient();
 
+export const dynamic = "force-dynamic";
+
 export default async function AdminMilestonesPage() {
     const milestones = await prisma.milestone.findMany({
         take: 50,

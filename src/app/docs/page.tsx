@@ -1,4 +1,4 @@
-import Link from "next/link";
+
 import { BookOpen, Code, Users } from "lucide-react";
 
 export default function DocsPage() {

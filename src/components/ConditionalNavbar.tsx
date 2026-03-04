@@ -7,8 +7,8 @@ import Navbar from "./Navbar";
 function NavbarContent() {
     const pathname = usePathname();
 
-    // Hide navbar on auth pages
-    const isAuthPage = pathname?.startsWith("/auth/");
+    // Hide navbar on auth pages or home page (home has its own nav)
+    const isAuthPage = pathname?.startsWith("/auth/") || pathname === "/";
 
     if (isAuthPage) {
         return null;

@@ -30,10 +30,22 @@ const PRO_FEATURES = [
 ];
 
 const FAQ = [
-    { q: "Can I cancel anytime?", a: "Yes. No lock-ins, no questions asked. You'll retain access until the end of your billing period." },
-    { q: "What's in Phase 1 for free?", a: "The entire first phase — all skills, all milestones, full detail. It's enough to evaluate whether the track fits your goals." },
-    { q: "Is there a student discount?", a: "Send a DM on Instagram @akashcodeofficial with your student ID and we'll sort you out." },
-    { q: "What if I want more than one track?", a: "Pro unlocks all 4 tracks simultaneously. Pick up a second track any time without paying more." },
+    {
+        q: "Can I cancel anytime?",
+        a: "Yes. No lock-ins, no questions asked. You'll retain access until the end of your billing period.",
+    },
+    {
+        q: "What's in Phase 1 for free?",
+        a: "The entire first phase — all skills, all milestones, full detail. It's enough to evaluate whether the track fits your goals.",
+    },
+    {
+        q: "Is there a student discount?",
+        a: "Send a DM on Instagram @akashcodeofficial with your student ID and we'll sort you out.",
+    },
+    {
+        q: "What if I want more than one track?",
+        a: "Pro unlocks all 4 tracks simultaneously. Pick up a second track any time without paying more.",
+    },
 ];
 
 export default function PricingPage() {
@@ -42,39 +54,56 @@ export default function PricingPage() {
             <div className="max-w-4xl mx-auto px-4 py-16">
 
                 {/* Header */}
-                <div className="text-center mb-16">
+                <header className="text-center mb-16">
                     <div className="inline-flex items-center gap-2 px-4 py-1.5 rounded-full border border-neon/20 bg-neon/5 text-xs font-semibold text-neon mb-6">
-                        <Zap className="w-3.5 h-3.5" /> Simple pricing
+                        <Zap className="w-3.5 h-3.5" aria-hidden="true" />
+                        Simple pricing
                     </div>
-                    <h1 className="font-display text-4xl sm:text-5xl font-bold text-foreground mb-4">
+                    <h1 className="font-display text-4xl sm:text-5xl font-bold text-foreground mb-4 leading-tight">
                         Start free.{" "}
                         <span className="text-neon">Upgrade when ready.</span>
                     </h1>
-                    <p className="text-muted-foreground max-w-md mx-auto text-sm">
+                    <p className="text-muted-foreground max-w-md mx-auto text-base leading-relaxed">
                         No credit card required to start. Phase 1 of every track is free, forever.
                     </p>
-                </div>
+                </header>
 
                 {/* Pricing Cards */}
-                <div className="grid grid-cols-1 sm:grid-cols-2 gap-6 mb-16">
+                <div className="grid grid-cols-1 sm:grid-cols-2 gap-5 mb-16">
 
                     {/* Free */}
-                    <div className="p-8 rounded-xl border border-border bg-surface">
+                    <div className="p-8 rounded-xl border border-border bg-surface flex flex-col">
                         <div className="mb-6">
-                            <h2 className="font-display text-xl font-bold text-foreground mb-1">Free</h2>
+                            <h2 className="font-display text-xl font-bold text-foreground mb-1">
+                                Free
+                            </h2>
                             <p className="text-sm text-muted-foreground">Start learning immediately</p>
                         </div>
                         <div className="mb-8">
-                            <span className="font-display text-5xl font-bold text-foreground">$0</span>
-                            <span className="text-muted-foreground text-sm">/month</span>
+                            <span className="font-display text-5xl font-bold text-foreground">
+                                $0
+                            </span>
+                            <span className="text-muted-foreground text-sm ml-1">/month</span>
                         </div>
-                        <div className="space-y-3 mb-8">
+                        <div className="space-y-3 mb-8 flex-1">
                             {FREE_FEATURES.map((f) => (
                                 <div key={f.text} className="flex items-start gap-3">
-                                    {f.included
-                                        ? <CheckCircle2 className="w-4 h-4 text-muted-foreground/60 mt-0.5 flex-shrink-0" />
-                                        : <X className="w-4 h-4 text-disabled mt-0.5 flex-shrink-0" />}
-                                    <span className={`text-sm ${f.included ? "text-foreground" : "text-disabled"}`}>
+                                    {f.included ? (
+                                        <CheckCircle2
+                                            className="w-4 h-4 text-muted-foreground/60 mt-0.5 flex-shrink-0"
+                                            aria-hidden="true"
+                                        />
+                                    ) : (
+                                        <X
+                                            className="w-4 h-4 text-disabled mt-0.5 flex-shrink-0"
+                                            aria-hidden="true"
+                                        />
+                                    )}
+                                    <span
+                                        className={`text-sm ${
+                                            f.included ? "text-foreground" : "text-disabled"
+                                        }`}
+                                    >
                                         {f.text}
                                     </span>
                                 </div>
@@ -89,72 +118,94 @@ export default function PricingPage() {
                     </div>
 
                     {/* Pro */}
-                    <div className="relative p-8 rounded-xl border border-neon/30 bg-surface overflow-hidden shadow-neon-sm">
-                        {/* Glow */}
-                        <div className="absolute inset-0 bg-gradient-to-br from-neon/5 via-transparent to-transparent pointer-events-none" />
+                    <div className="relative p-8 rounded-xl border border-neon/30 bg-surface overflow-hidden shadow-neon-sm flex flex-col">
+                        <div
+                            className="absolute inset-0 bg-gradient-to-br from-neon/5 via-transparent to-transparent pointer-events-none"
+                            aria-hidden="true"
+                        />
 
-                        <div className="relative">
+                        <div className="relative flex flex-col flex-1">
                             <div className="flex items-center justify-between mb-1">
-                                <h2 className="font-display text-xl font-bold text-foreground">Pro</h2>
+                                <h2 className="font-display text-xl font-bold text-foreground">
+                                    Pro
+                                </h2>
                                 <span className="px-2.5 py-1 bg-neon/15 text-neon text-[10px] font-bold uppercase tracking-widest rounded-full">
                                     Most Popular
                                 </span>
                             </div>
-                            <p className="text-sm text-muted-foreground mb-6">Full access to everything</p>
+                            <p className="text-sm text-muted-foreground mb-6">
+                                Full access to everything
+                            </p>
                             <div className="mb-8">
-                                <span className="font-display text-5xl font-bold text-foreground">$9</span>
-                                <span className="text-muted-foreground text-sm">/month</span>
+                                <span className="font-display text-5xl font-bold text-foreground">
+                                    $9
+                                </span>
+                                <span className="text-muted-foreground text-sm ml-1">/month</span>
                             </div>
-                            <div className="space-y-3 mb-8">
+                            <div className="space-y-3 mb-8 flex-1">
                                 {PRO_FEATURES.map((f) => (
                                     <div key={f.text} className="flex items-start gap-3">
-                                        <CheckCircle2 className="w-4 h-4 text-neon mt-0.5 flex-shrink-0" />
+                                        <CheckCircle2
+                                            className="w-4 h-4 text-neon mt-0.5 flex-shrink-0"
+                                            aria-hidden="true"
+                                        />
                                         <span className="text-sm text-foreground">{f.text}</span>
                                     </div>
                                 ))}
                             </div>
-                            <Link
-                                href="/onboarding"
-                                id="pricing-pro-cta"
-                                className="flex items-center justify-center gap-2 w-full py-3 btn-neon text-sm font-semibold rounded-lg animate-neon-pulse"
-                            >
-                                Start Pro <ArrowRight className="w-4 h-4" />
-                            </Link>
-                            <p className="text-center text-xs text-muted-foreground mt-3">
-                                Cancel anytime · No lock-in
-                            </p>
+                            <div>
+                                <Link
+                                    href="/onboarding"
+                                    className="flex items-center justify-center gap-2 w-full py-3 btn-neon text-sm font-semibold rounded-lg animate-neon-pulse"
+                                >
+                                    Start Pro{" "}
+                                    <ArrowRight className="w-4 h-4" aria-hidden="true" />
+                                </Link>
+                                <p className="text-center text-xs text-muted-foreground mt-3">
+                                    Cancel anytime · No lock-in
+                                </p>
+                            </div>
                         </div>
                     </div>
                 </div>
 
                 {/* FAQ */}
-                <div className="max-w-2xl mx-auto">
+                <section aria-label="Frequently asked questions">
                     <h2 className="font-display text-2xl font-bold text-foreground text-center mb-8">
                         Common questions
                     </h2>
-                    <div className="space-y-4">
+                    <div className="max-w-2xl mx-auto space-y-3">
                         {FAQ.map((item) => (
-                            <div key={item.q} className="p-5 rounded-xl border border-border bg-surface">
-                                <h3 className="font-semibold text-foreground text-sm mb-2">{item.q}</h3>
-                                <p className="text-sm text-muted-foreground leading-relaxed">{item.a}</p>
+                            <div
+                                key={item.q}
+                                className="p-5 rounded-xl border border-border bg-surface hover:bg-surface-raised transition-colors"
+                            >
+                                <h3 className="font-semibold text-foreground text-sm mb-2">
+                                    {item.q}
+                                </h3>
+                                <p className="text-sm text-muted-foreground leading-relaxed">
+                                    {item.a}
+                                </p>
                             </div>
                         ))}
                     </div>
-                </div>
+                </section>
 
                 {/* Bottom CTA */}
                 <div className="text-center mt-16 p-8 rounded-xl border border-border bg-surface">
                     <p className="font-display font-bold text-xl text-foreground mb-2">
                         Still on the fence?
                     </p>
-                    <p className="text-sm text-muted-foreground mb-6">
-                        Start with the free Phase 1 of any track. If it&apos;s not the best structured roadmap you&apos;ve seen, don&apos;t upgrade.
+                    <p className="text-sm text-muted-foreground mb-6 max-w-md mx-auto leading-relaxed">
+                        Start with the free Phase 1 of any track. If it&apos;s not the best structured
+                        roadmap you&apos;ve seen, don&apos;t upgrade.
                     </p>
                     <Link
                         href="/onboarding"
                         className="inline-flex items-center gap-2 px-6 py-3 btn-neon text-sm font-semibold"
                     >
-                        Start Free <ArrowRight className="w-4 h-4" />
+                        Start Free{" "}
+                        <ArrowRight className="w-4 h-4" aria-hidden="true" />
                     </Link>
                 </div>
 

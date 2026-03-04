@@ -9,7 +9,7 @@ export default function ConditionalMain({ children }: { children: React.ReactNod
   const isAuthPage = pathname?.startsWith("/auth/");
   
   return (
-    <main className={isAuthPage ? "min-h-screen" : "min-h-screen pt-16"}>
+    <main className={isAuthPage ? "min-h-screen" : "min-h-screen pt-[88px]"}>
       {children}
     </main>
   );

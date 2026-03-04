@@ -33,9 +33,8 @@ function LoginForm() {
         router.push(callbackUrl);
         router.refresh();
       }
-    } catch (error) {
-      setError("Something went wrong");
-      console.error(error);
+    } catch {
+      setError("Something went wrong. Please try again.");
     } finally {
       setIsLoading(false);
     }
@@ -45,37 +44,42 @@ function LoginForm() {
     setIsLoading(true);
     try {
       await signIn("google", { callbackUrl });
-    } catch (error) {
+    } catch {
       setError("Google sign in failed");
-      console.error(error);
       setIsLoading(false);
     }
   };
 
   return (
-    <div className="relative flex min-h-screen items-center justify-center overflow-hidden bg-gradient-to-br from-black via-zinc-950 to-black">
-      {/* Animated gradient background */}
-      <div className="absolute inset-0 bg-gradient-to-br from-black via-zinc-950 to-black">
-        <div className="absolute inset-0 bg-[radial-gradient(ellipse_at_top_right,_var(--tw-gradient-stops))] from-emerald-900/20 via-transparent to-transparent"></div>
-        <div className="absolute inset-0 bg-[radial-gradient(ellipse_at_bottom_left,_var(--tw-gradient-stops))] from-blue-900/15 via-transparent to-transparent"></div>
-      </div>
+    <div className="relative flex min-h-screen items-center justify-center overflow-hidden bg-background px-4 py-12">
+      {/* Background grid */}
+      <div
+        aria-hidden="true"
+        className="absolute inset-0 bg-grid opacity-20 pointer-events-none"
+      />
+      {/* Neon glow */}
+      <div
+        aria-hidden="true"
+        className="absolute top-0 left-1/2 -translate-x-1/2 w-[600px] h-[300px] pointer-events-none"
+        style={{
+          background:
+            "radial-gradient(ellipse at top, rgba(0,255,127,0.12) 0%, transparent 70%)",
+        }}
+      />
 
-      {/* Grid pattern overlay */}
-      <div className="absolute inset-0 bg-[linear-gradient(to_right,#ffffff08_1px,transparent_1px),linear-gradient(to_bottom,#ffffff08_1px,transparent_1px)] bg-[size:4rem_4rem]"></div>
-
-      {/* Content */}
-      <div className="relative z-10 w-full max-w-md px-4">
+      <div className="relative z-10 w-full max-w-md">
         {/* Card */}
         <div className="rounded-2xl border border-border bg-surface/80 p-8 shadow-2xl backdrop-blur-xl">
           {/* Header */}
           <div className="text-center mb-8">
-            <div className="mx-auto mb-4 flex h-14 w-14 items-center justify-center rounded-2xl bg-neon shadow-[0_0_24px_rgba(0,255,127,0.3)]">
+            <div className="mx-auto mb-4 flex h-14 w-14 items-center justify-center rounded-2xl bg-neon shadow-neon-md">
               <svg
-                className="h-7 w-7 text-black"
+                className="h-7 w-7 text-background"
                 fill="none"
                 viewBox="0 0 24 24"
                 stroke="currentColor"
                 strokeWidth={2}
+                aria-hidden="true"
               >
                 <path
                   strokeLinecap="round"
@@ -84,8 +88,12 @@ function LoginForm() {
                 />
               </svg>
             </div>
-            <h1 className="font-display text-2xl font-bold text-foreground mb-1">Welcome back</h1>
-            <p className="text-muted-foreground text-sm mb-4">Your engineering roadmap is waiting</p>
+            <h1 className="font-display text-2xl font-bold text-foreground mb-1">
+              Welcome back
+            </h1>
+            <p className="text-muted-foreground text-sm mb-4">
+              Your engineering roadmap is waiting
+            </p>
             <p className="text-sm text-muted-foreground">
               New here?{" "}
               <Link
@@ -97,14 +105,18 @@ function LoginForm() {
             </p>
           </div>
 
-          {/* Error Message */}
+          {/* Error */}
           {error && (
-            <div className="mb-6 rounded-lg border border-red-500/20 bg-red-500/10 p-4">
-              <div className="flex items-start">
+            <div
+              className="mb-6 rounded-lg border border-danger/30 bg-danger/10 p-4"
+              role="alert"
+            >
+              <div className="flex items-start gap-3">
                 <svg
-                  className="h-5 w-5 text-red-400 flex-shrink-0"
+                  className="h-5 w-5 text-danger flex-shrink-0 mt-0.5"
                   viewBox="0 0 20 20"
                   fill="currentColor"
+                  aria-hidden="true"
                 >
                   <path
                     fillRule="evenodd"
@@ -112,13 +124,13 @@ function LoginForm() {
                     clipRule="evenodd"
                   />
                 </svg>
-                <p className="ml-3 text-sm text-red-300">{error}</p>
+                <p className="text-sm text-danger">{error}</p>
               </div>
             </div>
           )}
 
-          {/* Email Input */}
-          <form className="space-y-5" onSubmit={handleSubmit}>
+          {/* Form */}
+          <form className="space-y-5" onSubmit={handleSubmit} noValidate>
             <div>
               <label htmlFor="email" className="block text-sm font-medium text-foreground mb-2">
                 Email
@@ -137,9 +149,20 @@ function LoginForm() {
             </div>
 
             <div>
-              <label htmlFor="password" className="block text-sm font-medium text-foreground mb-2">
-                Password
-              </label>
+              <div className="flex items-center justify-between mb-2">
+                <label
+                  htmlFor="password"
+                  className="block text-sm font-medium text-foreground"
+                >
+                  Password
+                </label>
+                <Link
+                  href="/auth/forgot-password"
+                  className="text-xs text-muted-foreground hover:text-neon transition-colors"
+                >
+                  Forgot password?
+                </Link>
+              </div>
               <input
                 id="password"
                 type="password"
@@ -153,32 +176,34 @@ function LoginForm() {
               />
             </div>
 
-            {/* Remember Me */}
-            <div className="flex items-center text-sm">
-              <input
-                id="remember-me"
-                name="remember-me"
-                type="checkbox"
-                className="h-4 w-4 rounded border-zinc-700 bg-zinc-900 text-neon focus:ring-2 focus:ring-neon/20 focus:ring-offset-0"
-              />
-              <label htmlFor="remember-me" className="ml-2 text-zinc-400">
-                Remember me
-              </label>
-            </div>
-
-            {/* Submit Button */}
             <button
               type="submit"
               disabled={isLoading}
-              className="w-full rounded-lg bg-neon py-3 font-semibold text-black shadow-lg shadow-emerald-500/30 transition-all hover:bg-emerald-400 hover:shadow-emerald-500/50 focus:outline-none focus:ring-2 focus:ring-neon/50 disabled:opacity-50 disabled:cursor-not-allowed"
+              className="w-full rounded-lg bg-neon py-3 font-semibold text-background shadow-neon-sm transition-all hover:bg-neon/90 hover:shadow-neon-md focus:outline-none focus:ring-2 focus:ring-neon/50 disabled:opacity-50 disabled:cursor-not-allowed"
             >
               {isLoading ? (
-                <span className="flex items-center justify-center">
-                  <svg className="animate-spin -ml-1 mr-3 h-5 w-5 text-white" fill="none" viewBox="0 0 24 24">
-                    <circle className="opacity-25" cx="12" cy="12" r="10" stroke="currentColor" strokeWidth="4"></circle>
-                    <path className="opacity-75" fill="currentColor" d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4zm2 5.291A7.962 7.962 0 014 12H0c0 3.042 1.135 5.824 3 7.938l3-2.647z"></path>
+                <span className="flex items-center justify-center gap-2">
+                  <svg
+                    className="animate-spin h-4 w-4 text-background"
+                    fill="none"
+                    viewBox="0 0 24 24"
+                    aria-hidden="true"
+                  >
+                    <circle
+                      className="opacity-25"
+                      cx="12"
+                      cy="12"
+                      r="10"
+                      stroke="currentColor"
+                      strokeWidth="4"
+                    />
+                    <path
+                      className="opacity-75"
+                      fill="currentColor"
+                      d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4zm2 5.291A7.962 7.962 0 014 12H0c0 3.042 1.135 5.824 3 7.938l3-2.647z"
+                    />
                   </svg>
-                  Signing in...
+                  Signing in…
                 </span>
               ) : (
                 "Sign in"
@@ -198,14 +223,14 @@ function LoginForm() {
             </div>
           </div>
 
-          {/* Google Button */}
+          {/* Google */}
           <button
             type="button"
             onClick={handleGoogleSignIn}
             disabled={isLoading}
-            className="w-full flex items-center justify-center gap-3 rounded-lg border border-border bg-background py-3 text-sm font-medium text-foreground transition-all hover:bg-surface focus:outline-none disabled:opacity-50 disabled:cursor-not-allowed"
+            className="w-full flex items-center justify-center gap-3 rounded-lg border border-border bg-background py-3 text-sm font-medium text-foreground transition-all hover:bg-surface-raised focus:outline-none focus:ring-2 focus:ring-neon/20 disabled:opacity-50 disabled:cursor-not-allowed"
           >
-            <svg className="h-5 w-5" viewBox="0 0 24 24">
+            <svg className="h-5 w-5 flex-shrink-0" viewBox="0 0 24 24" aria-hidden="true">
               <path
                 fill="#4285F4"
                 d="M22.56 12.25c0-.78-.07-1.53-.2-2.25H12v4.26h5.92c-.26 1.37-1.04 2.53-2.21 3.31v2.77h3.57c2.08-1.92 3.28-4.74 3.28-8.09z"
@@ -229,9 +254,19 @@ function LoginForm() {
 
         <p className="mt-6 text-center text-xs text-muted-foreground">
           By signing in, you agree to our{" "}
-          <Link href="/terms" className="text-muted-foreground hover:text-foreground transition-colors underline">Terms</Link>{" "}
+          <Link
+            href="/terms"
+            className="text-muted-foreground hover:text-foreground transition-colors underline"
+          >
+            Terms
+          </Link>{" "}
           and{" "}
-          <Link href="/privacy" className="text-muted-foreground hover:text-foreground transition-colors underline">Privacy Policy</Link>
+          <Link
+            href="/privacy"
+            className="text-muted-foreground hover:text-foreground transition-colors underline"
+          >
+            Privacy Policy
+          </Link>
         </p>
       </div>
     </div>
@@ -240,11 +275,13 @@ function LoginForm() {
 
 export default function LoginPage() {
   return (
-    <Suspense fallback={
-      <div className="flex min-h-screen items-center justify-center bg-background">
-        <div className="h-8 w-8 animate-spin rounded-full border-4 border-neon border-t-transparent"></div>
-      </div>
-    }>
+    <Suspense
+      fallback={
+        <div className="flex min-h-screen items-center justify-center bg-background">
+          <div className="h-8 w-8 animate-spin rounded-full border-4 border-neon border-t-transparent" />
+        </div>
+      }
+    >
       <LoginForm />
     </Suspense>
   );

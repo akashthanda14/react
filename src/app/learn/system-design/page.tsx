@@ -84,7 +84,7 @@ export default function SystemDesignRoadmapPage() {
 
                 {/* Phases */}
                 <div className="space-y-6">
-                    {phases.map((phase, index) => (
+                    {phases.map((phase) => (
                         <div
                             key={phase.id}
                             className="p-6 bg-card border border-border rounded-xl hover:border-neon/30 transition-all"
