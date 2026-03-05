@@ -14,7 +14,6 @@ function NavbarContent() {
         return null;
     }
 
-    // For non-auth pages, show a simple navbar without server-side data
     return <Navbar />;
 }
 

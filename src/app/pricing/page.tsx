@@ -100,9 +100,8 @@ export default function PricingPage() {
                                         />
                                     )}
                                     <span
-                                        className={`text-sm ${
-                                            f.included ? "text-foreground" : "text-disabled"
-                                        }`}
+                                        className={`text-sm ${f.included ? "text-foreground" : "text-disabled"
+                                            }`}
                                     >
                                         {f.text}
                                     </span>
@@ -110,7 +109,7 @@ export default function PricingPage() {
                             ))}
                         </div>
                         <Link
-                            href="/onboarding"
+                            href="/auth/register"
                             className="block w-full text-center py-3 btn-ghost text-sm font-semibold rounded-lg"
                         >
                             Start for Free
@@ -155,7 +154,7 @@ export default function PricingPage() {
                             </div>
                             <div>
                                 <Link
-                                    href="/onboarding"
+                                    href="/auth/register"
                                     className="flex items-center justify-center gap-2 w-full py-3 btn-neon text-sm font-semibold rounded-lg animate-neon-pulse"
                                 >
                                     Start Pro{" "}
@@ -201,7 +200,7 @@ export default function PricingPage() {
                         roadmap you&apos;ve seen, don&apos;t upgrade.
                     </p>
                     <Link
-                        href="/onboarding"
+                        href="/auth/register"
                         className="inline-flex items-center gap-2 px-6 py-3 btn-neon text-sm font-semibold"
                     >
                         Start Free{" "}
