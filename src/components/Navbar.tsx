@@ -66,7 +66,7 @@ export default function Navbar() {
               <span className="text-background font-display font-bold text-sm">A</span>
             </div>
             <span className="font-display text-[15px] font-bold text-foreground hidden sm:block">
-              akashcodeofficial
+              Akash Code <span className="text-neon">Official</span>
             </span>
           </Link>
 

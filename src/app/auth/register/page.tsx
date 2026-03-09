@@ -111,7 +111,7 @@ export default function RegisterPage() {
               </svg>
             </div>
             <h1 className="font-display text-2xl font-bold text-foreground mb-1">
-              Join akashcodeofficial
+              Join Akash Code Official
             </h1>
             <p className="text-muted-foreground text-sm mb-4">
               Start your engineering journey today

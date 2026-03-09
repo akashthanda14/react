@@ -28,14 +28,51 @@ const jetbrainsMono = JetBrains_Mono({
 });
 
 export const metadata: Metadata = {
-  title: "akashcodeofficial — Personalized Engineering Roadmaps",
+  title: {
+    default: "Akash Code Official — Structured Engineering Roadmaps",
+    template: "%s | Akash Code Official",
+  },
   description:
-    "Structured, phase-based learning tracks for junior engineers targeting senior roles in Full Stack, DevOps, System Design, and GenAI.",
+    "Structured, phase-based learning tracks for engineers targeting senior roles in Backend, DevOps, System Design, GenAI, and Full Stack — built from 20 years of production experience by @akashcodeofficial.",
+  keywords: [
+    "Akash Code Official",
+    "akashcodeofficial",
+    "engineering roadmap",
+    "backend engineering",
+    "system design",
+    "devops",
+    "genai",
+    "full stack",
+    "software engineering",
+    "learning tracks",
+    "mentorship",
+    "production experience",
+  ],
+  authors: [{ name: "Akash Code Official", url: "https://www.instagram.com/akashcodeofficial" }],
+  creator: "Akash Code Official",
+  publisher: "Akash Code Official",
   icons: {
     icon: [
       { url: "/icon.svg", type: "image/svg+xml" },
-      { url: "/icon.png", type: "image/png" },
     ],
+  },
+  openGraph: {
+    type: "website",
+    siteName: "Akash Code Official",
+    title: "Akash Code Official — Structured Engineering Roadmaps",
+    description:
+      "Phase-based learning tracks in Backend, System Design, DevOps, and GenAI — built from 20 years of production experience. Trusted by 128K+ engineers.",
+  },
+  twitter: {
+    card: "summary_large_image",
+    title: "Akash Code Official — Structured Engineering Roadmaps",
+    description:
+      "Phase-based learning tracks in Backend, System Design, DevOps, and GenAI — built from 20 years of production experience.",
+    creator: "@akashcodeofficial",
+  },
+  robots: {
+    index: true,
+    follow: true,
   },
 };
 

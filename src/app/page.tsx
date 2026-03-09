@@ -100,7 +100,7 @@ function LandingNav() {
         <Link href="/" className="flex items-center gap-2.5">
           <div className="w-8 h-8 rounded-lg bg-neon flex items-center justify-center font-mono font-black text-sm text-background flex-shrink-0">A</div>
           <span className="font-body font-bold text-base text-foreground">
-            akashcode<span className="text-neon">.official</span>
+            Akash Code <span className="text-neon">Official</span>
           </span>
         </Link>
 
@@ -432,8 +432,8 @@ function Pricing() {
               ))}
             </div>
             <button className={`mt-7 w-full py-3.5 rounded-xl text-[15px] font-bold transition-all active:scale-[0.98] ${plan.highlighted
-                ? "bg-neon text-background hover:bg-neon/90 shadow-neon-sm"
-                : "border border-border text-foreground hover:border-neon/30 hover:bg-neon/5 hover:text-neon"
+              ? "bg-neon text-background hover:bg-neon/90 shadow-neon-sm"
+              : "border border-border text-foreground hover:border-neon/30 hover:bg-neon/5 hover:text-neon"
               }`}>{plan.cta}</button>
           </div>
         ))}
@@ -454,7 +454,7 @@ function LandingFooter() {
             <div className="flex items-center gap-2.5 mb-4">
               <div className="w-8 h-8 rounded-lg bg-neon flex items-center justify-center font-mono font-black text-sm text-background">A</div>
               <span className="font-body font-bold text-base text-foreground">
-                akashcode<span className="text-neon">.official</span>
+                Akash Code <span className="text-neon">Official</span>
               </span>
             </div>
             <p className="text-sm text-foreground/30 leading-relaxed max-w-[280px]">
@@ -499,7 +499,7 @@ function LandingFooter() {
         </div>
 
         <div className="pt-6 border-t border-border flex flex-col sm:flex-row items-center justify-between gap-3">
-          <p className="text-xs text-foreground/20">© {year} akashcodeofficial. All rights reserved.</p>
+          <p className="text-xs text-foreground/20">© {year} Akash Code Official. All rights reserved.</p>
           <p className="text-xs text-foreground/20">Built for engineers serious about leveling up.</p>
         </div>
       </div>

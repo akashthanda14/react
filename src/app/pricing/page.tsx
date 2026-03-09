@@ -2,7 +2,7 @@ import Link from "next/link";
 import { CheckCircle2, X, ArrowRight, Zap } from "lucide-react";
 
 export const metadata = {
-    title: "Pricing — akashcodeofficial",
+    title: "Pricing",
     description: "Start free. Upgrade to Pro when you're ready for the full roadmap.",
 };
 

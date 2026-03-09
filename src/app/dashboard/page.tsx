@@ -4,7 +4,7 @@ import { ArrowRight, Flame, Zap, Layers, BookOpen } from "lucide-react";
 import { auth } from "@/lib/auth";
 
 export const metadata = {
-    title: "Dashboard — akashcodeofficial",
+    title: "Dashboard",
     description: "Your engineering learning dashboard",
 };
 

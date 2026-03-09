@@ -1,7 +1,7 @@
 import Link from "next/link";
 
 export const metadata = {
-    title: "Learning Tracks — akashcodeofficial",
+    title: "Learning Tracks",
     description: "Choose your engineering path. Structured, phase-based roadmaps built from real production experience.",
 };
 

@@ -4,7 +4,7 @@ import { Flame, Layers, BookOpen, Trophy } from "lucide-react";
 import Link from "next/link";
 
 export const metadata = {
-    title: "My Profile — akashcodeofficial",
+    title: "My Profile",
     description: "Your engineering learning profile",
 };
 

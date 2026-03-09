@@ -35,7 +35,7 @@ export default function Footer() {
                 <span className="text-background font-display font-bold text-[11px]">A</span>
               </div>
               <span className="font-display text-sm font-bold text-foreground">
-                akashcodeofficial
+                Akash Code <span className="text-neon">Official</span>
               </span>
             </Link>
             <p className="text-xs text-foreground/40 leading-relaxed max-w-[200px]">
@@ -72,7 +72,7 @@ export default function Footer() {
             <span>All systems operational</span>
           </div>
           <p className="text-xs text-foreground/30">
-            © {new Date().getFullYear()} akashcodeofficial. All rights reserved.
+            © {new Date().getFullYear()} Akash Code Official. All rights reserved.
           </p>
         </div>
       </div>
