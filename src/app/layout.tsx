@@ -53,7 +53,13 @@ export const metadata: Metadata = {
   publisher: "Akash Code Official",
   icons: {
     icon: [
+      { url: "/favicon.ico", sizes: "any" },
+      { url: "/favicon-16x16.png", sizes: "16x16", type: "image/png" },
+      { url: "/favicon-32x32.png", sizes: "32x32", type: "image/png" },
       { url: "/icon.svg", type: "image/svg+xml" },
+    ],
+    apple: [
+      { url: "/apple-touch-icon.png", sizes: "180x180", type: "image/png" },
     ],
   },
   openGraph: {
@@ -87,7 +93,7 @@ export default function RootLayout({
         {/* Google Analytics */}
         <script
           async
-          src="https://www.googletagmanager.com/gtag/js?id=G-7G1RJWFCRH"
+          src="https://www.googletagmanager.com/gtag/js?id=G-6K6MC9HWN3"
         />
         <script
           dangerouslySetInnerHTML={{
@@ -95,7 +101,7 @@ export default function RootLayout({
               window.dataLayer = window.dataLayer || [];
               function gtag(){dataLayer.push(arguments);}
               gtag('js', new Date());
-              gtag('config', 'G-7G1RJWFCRH');
+              gtag('config', 'G-6K6MC9HWN3');
             `,
           }}
         />
