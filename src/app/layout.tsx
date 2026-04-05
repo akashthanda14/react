@@ -1,27 +1,31 @@
 import type { Metadata } from "next";
-import { Syne, DM_Sans, JetBrains_Mono } from "next/font/google";
+import { Plus_Jakarta_Sans, Inter, JetBrains_Mono } from "next/font/google";
 import "./globals.css";
 import ConditionalNavbar from "@/components/ConditionalNavbar";
 import ConditionalFooter from "@/components/ConditionalFooter";
 import ConditionalMain from "@/components/ConditionalMain";
 import { SessionProvider } from "@/components/SessionProvider";
+import { ThemeProvider } from "@/components/ThemeProvider";
 
-const syne = Syne({
-  variable: "--font-syne",
+// Display / headings — Plus Jakarta Sans: confident, modern, premium
+const plusJakartaSans = Plus_Jakarta_Sans({
+  variable: "--font-display",
   subsets: ["latin"],
   weight: ["600", "700", "800"],
   display: "swap",
 });
 
-const dmSans = DM_Sans({
-  variable: "--font-dm-sans",
+// Body — Inter: industry-standard readability for web products
+const inter = Inter({
+  variable: "--font-body",
   subsets: ["latin"],
   weight: ["400", "500", "600"],
   display: "swap",
 });
 
+// Mono — JetBrains Mono: purpose-built for code and technical labels
 const jetbrainsMono = JetBrains_Mono({
-  variable: "--font-jetbrains-mono",
+  variable: "--font-mono",
   subsets: ["latin"],
   weight: ["400", "500"],
   display: "swap",
@@ -88,32 +92,32 @@ export default function RootLayout({
   children: React.ReactNode;
 }>) {
   return (
-    <html lang="en">
+    <html lang="en" data-theme="dark" suppressHydrationWarning>
       <head>
-        {/* Google Analytics */}
-        <script
-          async
-          src="https://www.googletagmanager.com/gtag/js?id=G-6K6MC9HWN3"
-        />
+        {/* Anti-FOUC: apply stored/preferred theme before first paint */}
         <script
           dangerouslySetInnerHTML={{
-            __html: `
-              window.dataLayer = window.dataLayer || [];
-              function gtag(){dataLayer.push(arguments);}
-              gtag('js', new Date());
-              gtag('config', 'G-6K6MC9HWN3');
-            `,
+            __html: `(function(){try{var t=localStorage.getItem('theme')||((window.matchMedia('(prefers-color-scheme: light)').matches)?'light':'dark');document.documentElement.setAttribute('data-theme',t);}catch(e){}})();`,
+          }}
+        />
+        {/* Google Analytics */}
+        <script async src="https://www.googletagmanager.com/gtag/js?id=G-6K6MC9HWN3" />
+        <script
+          dangerouslySetInnerHTML={{
+            __html: `window.dataLayer=window.dataLayer||[];function gtag(){dataLayer.push(arguments);}gtag('js',new Date());gtag('config','G-6K6MC9HWN3');`,
           }}
         />
       </head>
       <body
-        className={`${syne.variable} ${dmSans.variable} ${jetbrainsMono.variable} antialiased bg-background text-foreground font-body`}
+        className={`${plusJakartaSans.variable} ${inter.variable} ${jetbrainsMono.variable} antialiased bg-background text-foreground font-body`}
       >
-        <SessionProvider>
-          <ConditionalNavbar />
-          <ConditionalMain>{children}</ConditionalMain>
-          <ConditionalFooter />
-        </SessionProvider>
+        <ThemeProvider>
+          <SessionProvider>
+            <ConditionalNavbar />
+            <ConditionalMain>{children}</ConditionalMain>
+            <ConditionalFooter />
+          </SessionProvider>
+        </ThemeProvider>
       </body>
     </html>
   );

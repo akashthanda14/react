@@ -5,18 +5,17 @@ import { usePathname } from "next/navigation";
 import { useState, useEffect } from "react";
 import { useSession, signOut } from "next-auth/react";
 import { cn } from "@/lib/utils";
+import ThemeToggle from "./ThemeToggle";
 
 const navigation = [
   { name: "Tracks", href: "/learn" },
   { name: "Blog", href: "/blog" },
-  { name: "Pricing", href: "/pricing" },
 ];
 
 const authNavigation = [
   { name: "Dashboard", href: "/dashboard" },
   { name: "Tracks", href: "/learn" },
   { name: "Blog", href: "/blog" },
-  { name: "Pricing", href: "/pricing" },
 ];
 
 export default function Navbar() {
@@ -93,7 +92,8 @@ export default function Navbar() {
         </div>
 
         {/* Right side — Auth */}
-        <div className="hidden sm:flex items-center gap-2">
+        <div className="hidden sm:flex items-center gap-1">
+          <ThemeToggle />
           {status === "loading" ? (
             <div className="h-8 w-8 animate-pulse rounded-full bg-foreground/10" />
           ) : session ? (

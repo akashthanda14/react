@@ -13,6 +13,7 @@ declare module "next-auth" {
 }
 
 export const { handlers, auth, signIn, signOut } = NextAuth({
+  secret: process.env.AUTH_SECRET ?? process.env.NEXTAUTH_SECRET,
   session: {
     strategy: "jwt",
   },
@@ -97,22 +98,24 @@ export const { handlers, auth, signIn, signOut } = NextAuth({
       }
       return true;
     },
-    async jwt({ token, user, account }) {
-      if (user) {
+    async jwt({ token, user }) {
+      // On first sign-in, user object is present — persist DB id into the token
+      if (user?.id) {
         token.id = user.id;
-      } else if (account?.provider === "github" && token.email) {
-        // For existing sessions, look up the database user ID
+      }
+
+      // If token somehow lost the id (e.g. first OAuth sign-in before DB write), recover it
+      if (!token.id && token.email) {
         try {
           const dbUser = await prisma.user.findUnique({
             where: { email: token.email },
           });
-          if (dbUser) {
-            token.id = dbUser.id;
-          }
+          if (dbUser) token.id = dbUser.id;
         } catch (error) {
-          console.error("Error looking up user in JWT callback:", error);
+          console.error("JWT: failed to recover user id:", error);
         }
       }
+
       return token;
     },
     async session({ session, token }) {

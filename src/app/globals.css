@@ -1,39 +1,55 @@
 @import "tailwindcss";
 
-/* ─── Design Tokens — Neon-Inspired ──────────────────────────────────────── */
-:root {
-  /* Core palette — true black to match Neon.tech */
-  --color-background: 0 0 0;
-  /* #000000 — pure black */
-  --color-surface: 12 12 12;
-  /* #0C0C0C — cards */
-  --color-surface-raised: 18 18 18;
-  /* #121212 — elevated */
-  --color-border: 255 255 255;
-  /* white at low opacity */
+/* ─── Design Tokens ──────────────────────────────────────────────────────── */
+
+/* Dark mode (default) */
+:root,
+[data-theme="dark"] {
+  --color-background: 0 0 0;           /* #000000 */
+  --color-surface: 12 12 12;           /* #0C0C0C */
+  --color-surface-raised: 18 18 18;    /* #121212 */
+  --color-border: 255 255 255;         /* white, used at low opacity */
   --border-alpha: 0.08;
-  /* border transparency */
-  --color-foreground: 255 255 255;
-  /* #FFFFFF — text */
-  --color-muted: 160 160 160;
-  /* #A0A0A0 — secondary text */
+  --color-foreground: 255 255 255;     /* #FFFFFF */
+  --color-muted: 160 160 160;          /* #A0A0A0 */
   --color-disabled: 80 80 80;
-  /* #505050 — disabled */
-  --color-neon: 0 229 153;
-  /* #00E599 — Neon's signature green */
+  --color-neon: 0 229 153;             /* #00E599 */
   --color-danger: 239 68 68;
   --color-warning: 245 158 11;
   --color-ai: 139 92 246;
 
-  /* Legacy compat */
+  /* Legacy */
   --color-card: var(--color-surface);
   --color-accent: 255 255 255;
   --color-primary: 255 255 255;
+}
 
-  /* Typography */
-  --font-display: var(--font-syne, 'Syne', sans-serif);
-  --font-body: var(--font-dm-sans, 'DM Sans', sans-serif);
-  --font-mono: var(--font-jetbrains-mono, 'JetBrains Mono', monospace);
+/* Light mode */
+[data-theme="light"] {
+  --color-background: 250 250 250;     /* #FAFAFA */
+  --color-surface: 255 255 255;        /* #FFFFFF — cards */
+  --color-surface-raised: 244 244 245; /* #F4F4F5 — elevated */
+  --color-border: 0 0 0;               /* black, used at low opacity */
+  --border-alpha: 0.08;
+  --color-foreground: 9 9 11;          /* #09090B — near-black text */
+  --color-muted: 113 113 122;          /* #71717A */
+  --color-disabled: 161 161 170;       /* #A1A1AA */
+  --color-neon: 0 140 92;              /* #008C5C — darker green for contrast on white */
+  --color-danger: 220 38 38;
+  --color-warning: 217 119 6;
+  --color-ai: 109 40 217;
+
+  /* Legacy */
+  --color-card: var(--color-surface);
+  --color-accent: 9 9 11;
+  --color-primary: 9 9 11;
+}
+
+:root {
+  /* Typography — variables injected by Next.js font loader */
+  --font-display: var(--font-display, 'Plus Jakarta Sans', sans-serif);
+  --font-body: var(--font-body, 'Inter', sans-serif);
+  --font-mono: var(--font-mono, 'JetBrains Mono', monospace);
 
   /* Spacing (8pt grid) */
   --space-xs: 4px;
@@ -436,6 +452,15 @@
 
   .shadow-ai-md {
     box-shadow: 0 0 24px rgb(var(--color-ai) / 0.25);
+  }
+
+  /* Misc utilities */
+  .bg-foreground\/8 {
+    background-color: rgb(var(--color-foreground) / 0.08);
+  }
+
+  .hover\:bg-foreground\/8:hover {
+    background-color: rgb(var(--color-foreground) / 0.08);
   }
 
   /* Grid pattern — dot pattern like Neon */

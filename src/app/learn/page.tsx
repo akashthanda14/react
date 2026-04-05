@@ -114,16 +114,6 @@ export default function LearnPage() {
                     </div>
                 </div>
 
-                {/* CTA */}
-                <div className="mt-12 text-center">
-                    <p className="text-sm text-foreground/30 mb-4">
-                        Want personalized mentorship alongside the roadmap?
-                    </p>
-                    <Link href="/pricing" className="text-[13px] font-medium text-neon hover:underline">
-                        View Pricing →
-                    </Link>
-                </div>
-
             </div>
         </div>
     );

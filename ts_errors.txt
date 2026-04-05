@@ -1,0 +1,8 @@
+src/app/dsa-sheet/components/DsaDashboardLayout.tsx(3,8): error TS6133: 'React' is declared but its value is never read.
+src/app/dsa-sheet/components/DsaDashboardLayout.tsx(11,9): error TS6133: 'setSearchQuery' is declared but its value is never read.
+src/app/dsa-sheet/components/PreviewPanel.tsx(3,1): error TS6133: 'React' is declared but its value is never read.
+src/app/dsa-sheet/components/ProblemTable.tsx(4,10): error TS2305: Module '"react-window"' has no exported member 'FixedSizeList'.
+src/app/dsa-sheet/components/ProblemTable.tsx(8,1): error TS6133: 'Problem' is declared but its value is never read.
+src/app/dsa-sheet/components/Sidebar.tsx(3,8): error TS6133: 'React' is declared but its value is never read.
+src/app/dsa-sheet/components/Sidebar.tsx(5,38): error TS6133: 'ChevronRight' is declared but its value is never read.
+src/app/dsa-sheet/components/TopBar.tsx(3,8): error TS6133: 'React' is declared but its value is never read.

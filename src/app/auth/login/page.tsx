@@ -13,7 +13,9 @@ function LoginForm() {
   const [error, setError] = useState("");
   const [isLoading, setIsLoading] = useState(false);
 
-  const callbackUrl = searchParams?.get("callbackUrl") || "/dashboard";
+  // Sanitise: only allow same-origin pathname to prevent open-redirect
+  const raw = searchParams?.get("callbackUrl") || "/dashboard";
+  const callbackUrl = raw.startsWith("/") ? raw : "/dashboard";
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
@@ -43,7 +45,7 @@ function LoginForm() {
   const handleGoogleSignIn = async () => {
     setIsLoading(true);
     try {
-      await signIn("google", { callbackUrl });
+      await signIn("google", { callbackUrl, redirect: true });
     } catch {
       setError("Google sign in failed");
       setIsLoading(false);

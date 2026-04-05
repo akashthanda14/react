@@ -93,14 +93,11 @@ export default function TrackRoadmapLayout({
                     ))}
                 </div>
 
-                {/* Bottom CTA */}
+                {/* Bottom note */}
                 <div className="mt-12 border border-border rounded-xl p-8 text-center">
-                    <p className="text-[14px] text-foreground/30 mb-3">
+                    <p className="text-[14px] text-foreground/30">
                         Each phase builds on the previous. Work through them in order for the best results.
                     </p>
-                    <Link href="/pricing" className="text-[13px] font-medium text-neon hover:underline">
-                        Want 1:1 mentorship? View pricing →
-                    </Link>
                 </div>
             </div>
         </div>

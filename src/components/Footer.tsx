@@ -4,7 +4,6 @@ const footerLinks = {
   Platform: [
     { label: "Learning Tracks", href: "/learn" },
     { label: "Blog", href: "/blog" },
-    { label: "Pricing", href: "/pricing" },
     { label: "Dashboard", href: "/dashboard" },
   ],
   Tracks: [
